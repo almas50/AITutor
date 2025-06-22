@@ -1,0 +1,64 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: waifubot
+      POSTGRES_PASSWORD: waifupass
+      POSTGRES_DB: waifubotdb
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - '5050:5050'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
+  bot:
+    build: .
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+      - ./:/app
+    command: ["python", "main.py"]
+
+  worker:
+    build: .
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+      - ./:/app
+    command: ["python", "worker.py"]
+
+volumes:
+  db_data:
+  redis_data:
+  pgadmin_data: 
