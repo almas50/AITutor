@@ -22,7 +22,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 from database import Base
 from models.user import User
-from models.waifu import Waifu
+from models.tutor import Tutor
 
 target_metadata = Base.metadata
 

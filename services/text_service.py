@@ -1,2 +1,2 @@
-async def generate_waifu_text():
-    return 'This is a sample waifu response.' 
+async def generate_tutor_text():
+    return 'This is a sample tutor response.' 

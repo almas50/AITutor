@@ -3,17 +3,18 @@ from telegram.ext import CommandHandler, ContextTypes
 from services.generation import enqueue_generate
 import os
 
+def generate_tutor_reply(message, tutor_settings):
+    # Placeholder for GPT integration
+    # This function will call the GPT API with tutor-specific settings
+    return f"[AI Tutor reply based on settings: {tutor_settings}]"
+
 async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    prompt = 'Generate my waifu!'
+    prompt = 'Generate a tutor reply!'
     await enqueue_generate(user_id, prompt)
-    await update.message.reply_text('Generating... please wait')
+    await update.message.reply_text('Your tutor is preparing a response... please wait')
     # In the future, add a task to a queue here
-    # image_path = await get_placeholder_image()
-    # if os.path.exists(image_path):
-    #     with open(image_path, 'rb') as img:
-    #         await update.message.reply_photo(photo=InputFile(img), caption='Here is your waifu! (placeholder)')
-    # else:
-    #     await update.message.reply_text('Image not found.')
+    # reply = generate_tutor_reply(prompt, tutor_settings)
+    # await update.message.reply_text(reply)
 
 generate_handler = CommandHandler('generate', generate) 

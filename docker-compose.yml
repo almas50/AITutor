@@ -4,9 +4,9 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_USER: waifubot
-      POSTGRES_PASSWORD: waifupass
-      POSTGRES_DB: waifubotdb
+      POSTGRES_USER: tutorbot
+      POSTGRES_PASSWORD: tutorpass
+      POSTGRES_DB: tutorbotdb
     ports:
       - '5432:5432'
     volumes:

@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, ContextTypes
 from database import AsyncSessionLocal
 from models.user import User
-from models.waifu import Waifu
+from models.tutor import Tutor
 from sqlalchemy import select
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -15,27 +15,27 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             session.add(user)
             await session.commit()
 
-        # Если уже выбрал вайфу — не показываем выбор
-        if user.waifu_id:
-            waifu_result = await session.execute(select(Waifu).where(Waifu.id == user.waifu_id))
-            waifu = waifu_result.scalar_one_or_none()
-            waifu_name = waifu.name if waifu else "Unknown"
-            await update.message.reply_text(f"You've already chosen your waifu: {waifu_name}")
+        # If already selected a tutor — don't show selection
+        if user.tutor_id:
+            tutor_result = await session.execute(select(Tutor).where(Tutor.id == user.tutor_id))
+            tutor = tutor_result.scalar_one_or_none()
+            tutor_name = tutor.name if tutor else "Unknown"
+            await update.message.reply_text(f"You've already chosen your language tutor: {tutor_name}")
             return
 
-    # Загружаем список вайфу
+    # Load list of tutors
     async with AsyncSessionLocal() as session:
-        waifus_result = await session.execute(select(Waifu))
-        waifus = waifus_result.scalars().all()
+        tutors_result = await session.execute(select(Tutor))
+        tutors = tutors_result.scalars().all()
 
         keyboard = [
-            [InlineKeyboardButton(waifu.name, callback_data=f"choose_waifu:{waifu.id}")]
-            for waifu in waifus
+            [InlineKeyboardButton(tutor.name, callback_data=f"choose_tutor:{tutor.id}")]
+            for tutor in tutors
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-        'Welcome to Waifu Bot!\nChoose your waifu to begin your adventure:',
+        'Welcome to TutorBot!\nChoose your language tutor to begin your learning journey:',
         reply_markup=reply_markup
     )
 

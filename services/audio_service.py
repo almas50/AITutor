@@ -1,2 +1,2 @@
-async def generate_waifu_audio():
-    return 'placeholders/sample.mp3' 
+async def generate_tutor_audio():
+    pass 
