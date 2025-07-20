@@ -5,4 +5,10 @@ alembic
 python-dotenv
 psycopg2-binary
 saq[redis]
-redis 
+redis
+openai
+langchain
+langchain-openai
+langchain-chroma
+langchain-community
+chromadb

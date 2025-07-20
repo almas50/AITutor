@@ -65,4 +65,5 @@ logs/
 *.rej
 *.tmp
 
-Cursor-1.1.3-x86_64.AppImage
+# Chroma local database
+chroma_db/

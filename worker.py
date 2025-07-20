@@ -1,16 +1,19 @@
-import os
 import asyncio
 import logging
-from saq import Queue, Worker
 from dotenv import load_dotenv
-from tasks.generate_task import queue, generate_tutor_content  # Здесь уже зарегистрированы таски
+from saq import Worker
+from tasks import generate_task  # импорт модуля с функцией
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 async def main():
-    worker = Worker(queue, functions=(generate_tutor_content,))  # создаем воркера с очередью
-    await worker.start()    # запускаем воркера
+    worker = Worker(
+        queue=generate_task.queue,
+        functions=[generate_task.generate_tutor_content],  # регистрируем функцию
+        concurrency=5  # например, 5 параллельных задач
+    )
+    await worker.start()
 
 if __name__ == "__main__":
     asyncio.run(main())

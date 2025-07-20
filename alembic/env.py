@@ -23,6 +23,7 @@ fileConfig(config.config_file_name)
 from database import Base
 from models.user import User
 from models.tutor import Tutor
+from models.message import Message
 
 target_metadata = Base.metadata
 
